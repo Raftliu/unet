@@ -1,0 +1,63 @@
+from libtiff import *
+import os
+##
+# Read the tif , to split it 30 slices
+##
+
+#imgstack = TIFF3D.read_image('train-volum.tif')
+def splittif():
+	imgstack = TIFF3D.open('train/train-volume.tif')
+	imgstack = imgstack.read_image()
+	for i in range(imgstack.shape[0]):
+		savepath = 'newtrain/' + str(i) + '.tif'
+		img = TIFF.open(savepath,'w')
+		img.write_image(imgstack[i])
+
+	print('labels divide into 30 slices')
+	imgstack = TIFF3D.open('train/train-labels.tif')
+	imgstack = imgstack.read_image()
+	for i in range(imgstack.shape[0]):
+		savepath = 'newlabel/' + str(i) + '.tif'
+		img = TIFF.open(savepath,'w')
+		img.write_image(imgstack[i])
+
+	print('test divid into 30 slices')
+	imgstack = TIFF3D.open('test/test-volume.tif')
+	imgstack = imgstack.read_image()
+	for i in range(imgstack.shape[0]):
+		savepath = 'newtest/' + str(i) + '.tif'
+		img = TIFF.open(savepath,'w')
+		img.write_image(imgstack[i])
+
+"""
+def tiff3D():
+	print 'test tiff3D'
+	imgstack = TIFF3D.open('train/train-volume.tif')
+	imgstack = imgstack.read_image()  
+	print imgstack.shape
+	'''
+	for i in range(imgstack.shape[0]):
+		savepath = 'newtrain/' + str(i) + '.tif'
+		img = TIFF.open(savepath,'w')
+		img.write_image(imgstack[i])
+	'''
+	
+def tiff():
+	print 'test tiff'
+	imgstack = TIFF.open('train/train-volume.tif')
+	img = imgstack.read_image()
+	print img.shape
+	j=0
+	for i in imgstack.iter_images():
+		savepath = 'newtrain1/' + str(j) + '.tif'
+		if not os.path.exists('newtrain1'):
+			os.makedirs('newtrain1')
+		img = TIFF.open(savepath,'w')
+		img.write_image(i)
+		j=j+1
+
+"""
+if __name__ == '__main__':
+
+	splittif()
+
